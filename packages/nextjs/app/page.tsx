@@ -7,7 +7,9 @@ import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldRead
 import { useDeployedContractInfo } from "~~/hooks/scaffold-stark";
 // import { useScaffoldReadContract } from "~~/hooks/scaffold-stark/useScaffoldReadContract";
 import { useScaffoldWriteContract } from "~~/hooks/scaffold-stark/useScaffoldWriteContract";
-// import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
+import { useScaffoldEventHistory } from "~~/hooks/scaffold-stark/useScaffoldEventHistory";
+import { useBlockNumber } from "@starknet-react/core";
+import { useScaffoldMultiWriteContract } from "~~/hooks/scaffold-stark/useScaffoldMultiWriteContract";
 // import { useScaffoldEventHistory } from "~~/hooks/scaffold-stark/useScaffoldEventHistory";
 // import { useBlockNumber } from "@starknet-react/core";
 // import { useDeployedContractInfo } from "~~/hooks/scaffold-stark/useDeployedContractInfo";
@@ -49,6 +51,17 @@ const Home = () => {
     { 
       contractName: "Counter",
       functionName: "increase_counter",
+     }
+  );
+
+  const { data: blockNumber } = useBlockNumber();
+
+  const { data: events } = useScaffoldEventHistory(
+    { 
+      contractName: "Counter",
+      eventName: "contracts::counter::Counter::Increased",
+      fromBlock: blockNumber ? (blockNumber > 50n ? BigInt(blockNumber - 50) : 0n) : 0n,
+      watch: true,
      }
   );
 
@@ -149,14 +162,24 @@ const Home = () => {
             </div>
           </div>
           
-          {/* <div className="bg-base-100 p-8 rounded-3xl border border-gradient shadow-lg">
+          <div className="bg-base-100 p-8 rounded-3xl border border-gradient shadow-lg">
             <h2 className="text-2xl font-bold mb-6 text-secondary">
               Activity History
             </h2>
             <div className="space-y-4">
-              <p className="text-center text-lg opacity-70">No activity yet</p>
+              {events && events.length > 0 ? ( 
+                events.map((event, index) => (
+                   <div key={index} className="p-4 bg-base-200 rounded-xl">
+                    <p className="text-lg">
+                        <span className="font-medium">{event.parsedArgs.account. substring (0, 6)}{e}
+                      </p>
+                  </div>
+                ))
+              ) : (
+              <p className="text-center text-lg opacity-70">No activity yet</p> 
+                )}
             </div>
-          </div> */}
+          </div>
         </div>
       </div>
     </div>
