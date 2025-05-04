@@ -1,7 +1,8 @@
 #[starknet::interface]
 pub trait IYourContract<TContractState> {
     fn greeting(self: @TContractState) -> ByteArray;
-    fn set_greeting(ref self: TContractState, new_greeting: ByteArray, amount_strk: Option<u256>);
+    fn set_greeting(ref self: TContractState, new_greeting: ByteArray, amount_strk:
+    Option<u256>);
     fn withdraw(ref self: TContractState);
     fn premium(self: @TContractState) -> bool;
 }
@@ -84,7 +85,8 @@ pub mod YourContract {
                         contract_address: strk_contract_address,
                     };
                     strk_dispatcher
-                        .transfer_from(get_caller_address(), get_contract_address(), amount_strk);
+                        .transfer_from(get_caller_address(), get_contract_address(),
+                        amount_strk);
                     self.premium.write(true);
                 },
                 Option::None => { self.premium.write(false); },

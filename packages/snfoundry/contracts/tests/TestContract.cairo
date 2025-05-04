@@ -3,7 +3,8 @@ use contracts::YourContract::{
 };
 use openzeppelin_token::erc20::interface::{IERC20Dispatcher, IERC20DispatcherTrait};
 use openzeppelin_utils::serde::SerializedAppend;
-use snforge_std::{CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_caller_address, declare};
+use snforge_std::{CheatSpan, ContractClassTrait, DeclareResultTrait, cheat_caller_address,
+declare};
 use starknet::{ContractAddress};
 
 // Real contract address deployed on Sepolia
@@ -33,7 +34,7 @@ fn test_set_greetings() {
 }
 
 #[test]
-#[fork("SEPOLIA_LATEST")]
+#[fork("SEPOLIA_LATEST", block_tag: latest)]
 fn test_transfer() {
     let user: ContractAddress = OWNER.try_into().unwrap();
     let strk_contract_address = STRK_CONTRACT_ADDRESS.try_into().unwrap();
